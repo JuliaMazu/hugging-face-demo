@@ -1,0 +1,29 @@
+name: Sync to Hugging Face Spaces
+
+on:
+  push:
+    branches: [main]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout infrastructure
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Add remote
+        env:
+          HF: ${{ secrets.HF }}
+        run: git remote add space https://Iulia-leeloo:$HF@huggingface.co/spaces/Iulia-leeloo/hugging-face-demo
+
+      - name: Push to Hub
+        env:
+          HF: ${{ secrets.HF }}
+        run: git push --force https://Iulia-leeloo:$HF@huggingface.co/spaces/Iulia-leeloo/hugging-face-demo main
+          # Force push to the Space's main branch
+         
